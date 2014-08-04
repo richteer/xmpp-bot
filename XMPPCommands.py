@@ -1,6 +1,8 @@
 import os
 import imp
 
+# TODO: Replace all calls to print() with appropriate logging statements
+
 class Commander():
 	commands = {}
 
@@ -48,7 +50,6 @@ class Commander():
 		self.admincommands[command] = handler
 
 	def handle_command(self, message, jid=None):
-		print(jid)
 		temp = message.split(' ',1)
 		args = temp[1] if len(temp) == 2 else None
 		command = temp[0]
