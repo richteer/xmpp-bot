@@ -2,20 +2,38 @@
 import logging
 import XMPPCommands
 import time
-import sys
+import json
+import getpass
 
 from sleekxmpp import ClientXMPP
 from sleekxmpp.exceptions import IqError, IqTimeout
 
+admins = []
+
+def loadConfig():
+	global admins
+	with open("config.json","r") as f:
+		data = json.loads(f.read())
+
+	admins = data["admins"] if "admins" in data.keys() else []	
+	pwd = getpass.getpass()
+	jid = data["jid"] if "jid" in data.keys() else None # TODO: Make this an error
+	rooms = []
+	if "muc" in data.keys():
+		for r in data["muc"]:
+			rooms.append((r["room"],r["nick"]))
+	return (jid,pwd,rooms)
+
+
 
 class Bot(ClientXMPP):
 
-	def __init__(self, jid, password, room, nick):
+	def __init__(self, jid, password, rooms):
 		ClientXMPP.__init__(self,jid,password)
 		
-		self.room = room
-		self.nick = nick
+		self.rooms = rooms
 		self.comm = XMPPCommands.Commander()
+		self.comm.set_admins(admins)
 		self.lastcmd = time.time() 
 
 		self.add_event_handler("session_start", self.session_start)
@@ -24,7 +42,8 @@ class Bot(ClientXMPP):
 
 	def session_start(self, event):
 		self.send_presence()
-		self.plugin['xep_0045'].joinMUC(self.room, self.nick, wait=True)
+		for r in self.rooms:
+			self.plugin['xep_0045'].joinMUC(r[0], r[1], wait=True)
 		
 		# self.get_roster()
 
@@ -49,7 +68,8 @@ class Bot(ClientXMPP):
 			return
 
 		self.lastcmd = temp
-		if msg['mucnick'] != self.nick and msg['body'][0] == '!':
+		# TODO: Check nick for specific muc
+		if msg['mucnick'] not in [n[1] for n in self.rooms] and msg['body'][0] == '!':
 			response = self.comm.handle_command(msg['body'], msg.getMucnick())
 			
 			if response != None:
@@ -57,12 +77,11 @@ class Bot(ClientXMPP):
 
 
 if __name__ == '__main__':
-	if len(sys.argv) != 5:
-		print("Usage: {} <jid> <pass> <room> <mucnick>".format(sys.argv[0]))
-		exit(1)
-	# TODO: Use argparse here
 	logging.basicConfig(level=logging.INFO, format='%(levelname)-8s %(message)s')
-	xmpp = Bot(sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4])
+	
+	jid,pwd,rooms = loadConfig()
+
+	xmpp = Bot(jid, pwd, rooms)
 	xmpp.register_plugin('xep_0045')
 	xmpp.connect()
 	xmpp.process(block=True)

@@ -11,6 +11,9 @@ class Commander():
 		# TODO: Load this dynamically?
 		self.admins = []
 
+	def set_admins(self, ls):
+		self.admins = ls
+
 	def update_commands(self):
 		mods = []
 		self.commands = {}
