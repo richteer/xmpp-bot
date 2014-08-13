@@ -70,7 +70,7 @@ class Bot(ClientXMPP):
 		self.lastcmd = temp
 		# TODO: Check nick for specific muc
 		if msg['mucnick'] not in [n[1] for n in self.rooms] and msg['body'][0] == '!':
-			response = self.comm.handle_command(msg['body'], msg.getMucnick())
+			response = self.comm.handle_command(msg['body'])
 			
 			if response != None:
 				self.send_message(mto=msg['from'].bare, mbody=response, mtype='groupchat')
