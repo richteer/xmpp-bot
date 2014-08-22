@@ -32,7 +32,7 @@ class Bot(ClientXMPP):
 		ClientXMPP.__init__(self,jid,password)
 		
 		self.rooms = rooms
-		self.comm = XMPPCommands.Commander()
+		self.comm = XMPPCommands.Commander(self)
 		self.comm.set_admins(admins)
 		self.lastcmd = time.time() 
 
@@ -55,7 +55,7 @@ class Bot(ClientXMPP):
 
 		if msg['type'] in ('chat', 'normal') and msg['body'][0] == "!":
 			self.lastcmd = temp
-			response = self.comm.handle_command(msg['body'], jid=msg['from'].bare)			
+			response = self.comm.handle_command(msg['body'], jid=msg['from'].bare)
 
 			if response != None:
 				self.send_message(mto=msg['from'].bare, mbody=response, mtype=msg['type'])

@@ -5,11 +5,13 @@ import imp
 
 class Commander():
 	commands = {}
+	messenger = None
 
-	def __init__(self):
+	def __init__(self, messenger):
 		self.update_commands()
 		# TODO: Load this dynamically?
 		self.admins = []
+		self.messenger = messenger
 
 	def set_admins(self, ls):
 		self.admins = ls
@@ -34,6 +36,8 @@ class Commander():
 						self.adminregister(c, m.admincommands[c])
 				if hasattr(m, "init"):
 					m.init()
+				if hasattr(m, "messenger"):
+					m.messenger = self.messenger
 			except Exception as e:
 				print("Error loading commands from " + m.__name__)
 				print(e)
