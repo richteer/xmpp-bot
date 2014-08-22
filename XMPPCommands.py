@@ -8,10 +8,10 @@ class Commander():
 	messenger = None
 
 	def __init__(self, messenger):
+		self.messenger = messenger
 		self.update_commands()
 		# TODO: Load this dynamically?
 		self.admins = []
-		self.messenger = messenger
 
 	def set_admins(self, ls):
 		self.admins = ls
