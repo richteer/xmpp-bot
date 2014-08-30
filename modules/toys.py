@@ -43,3 +43,11 @@ commands = {
 	"!cowsay":handle_cowsay,
 	"!fortune":handle_fortune
 }
+
+help_text = {
+	"!cowsay":'''
+Usage: !cowsay [-bdgpstwy] [-h] [-e eyes] [-f cowfile] 
+          [-l] [-n] [-T tongue] [-W wrapcolumn] <message>
+''' + "\nYou can also enter '!cowsay !fortune' for a fortunate cow.",
+	"!fortune":"\nUsage: !fortune\nReplies with a random fortune"
+}

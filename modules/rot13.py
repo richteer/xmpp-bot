@@ -12,3 +12,7 @@ def rot13_handler(string):
 commands = {
 	"!rot13":rot13_handler
 }
+
+help_text = {
+	"!rot13":"\nUsage: !rot13 <string>\nReturns the string where each letter has been 'rotated' around the alphabet 13 places"
+}

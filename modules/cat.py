@@ -1,8 +1,11 @@
 import requests
 import re
 
+regex = None
+
 def init():
-	regex = re.compile(re.escape('<img src="(.*)">'))
+	global regex
+	regex = re.compile('<img src="(.*)">')
 
 def cat(string):
 	if string in [None, "gif", "jpg", "png"]:
@@ -14,6 +17,7 @@ def cat(string):
 	if m:
 		return m.group(1)
 	else:
+		print("Error extracting the image url!")
 		return None
 
 def catfacts(string):
@@ -22,4 +26,9 @@ def catfacts(string):
 commands = {
 	"!cat":cat,
 	"!catfact":catfacts
+}
+
+help_text = {
+	"!cat":"\nUsage: !cat [ gif | jpg | png ]\nReturns a link to a cat picture. You may optionally supply either jpg, png, or gif, to specify the image format.",
+	"!catfact":"\nUsage: !catfact\nReplies with a random cat fact. Nothing more, nothing less."
 }

@@ -26,3 +26,7 @@ def handle_xkcd(string):
 commands = {
 	"!xkcd":handle_xkcd
 }
+
+help_text = {
+	"!xkcd":"\nUsage: <number>\nReturns the title, and a link to the xkcd as specified by the number argument.\n'!xkcd today' can also be used to return the current comic"
+}

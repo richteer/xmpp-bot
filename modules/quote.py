@@ -45,3 +45,8 @@ admincommands = {
 	"!writequotes":writequotes_handler,
 	"!reloadquotes":lambda x: init()
 }
+
+help_text = {
+	"!quote":"\nUsage: !quote [substring]\nReplies with a random quote from 'quotes.txt'.\nIf an argument is supplied, return only quotes that contain that substring",
+	"!quoteadd":"\nUsage: !quoteadd <quote>\nTemporarily add the quote into the pool of quotes.\nNOTE: Quotes added this way will NOT persist when the bot is shut down, or the module is reloaded."
+}
