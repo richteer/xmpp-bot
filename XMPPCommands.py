@@ -6,6 +6,7 @@ import imp
 class Commander():
 	commands = {}
 	messenger = None
+	help_text = {}
 
 	def __init__(self, messenger):
 		self.messenger = messenger
